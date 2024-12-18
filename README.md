@@ -1,5 +1,7 @@
 # `rust_npy_io`
 
+[![CI](https://github.com/NaokiHori/rust_npy_io/actions/workflows/ci.yml/badge.svg)](https://github.com/NaokiHori/rust_npy_io/actions/workflows/ci.yml)
+
 A Rust library for reading and writing [`NPY`](https://numpy.org/doc/stable/reference/generated/numpy.lib.format.html) files.
 
 ## Dependency

@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+      - .github/workflows/ci.yml
+  workflow_dispatch:
+
+jobs:
+
+  test:
+    name: Unit testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+      - name: Build and Run Tests
+        run: |
+          cargo test --features="reader writer"
+

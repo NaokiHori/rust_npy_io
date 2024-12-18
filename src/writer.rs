@@ -48,7 +48,6 @@ pub fn prepare_buffer_info(dict_len: usize) -> BufferInfo {
         - SIZE_MAJOR_VERSION
         - SIZE_MINOR_VERSION
         - SIZE_HEADER_LEN[if major_version == 1u8 { 0usize } else { 1usize }];
-    dbg!(header_size, header_len, dict_len);
     let padding_size: usize = header_len - dict_len;
     let header_len_bytes: Vec<u8> = if major_version == 1u8 {
         (header_len as u16).to_le_bytes().to_vec()
