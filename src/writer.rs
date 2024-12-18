@@ -26,10 +26,18 @@ pub fn prepare_dictionary(header: &crate::Header) -> Result<Vec<u8>, WriteHeader
 }
 
 pub fn prepare_buffer_info(dict_len: usize) -> BufferInfo {
-    let mut header_size = HEADER_BLOCK_SIZE;
-    while header_size <= dict_len {
-        header_size += HEADER_BLOCK_SIZE;
-    }
+    let header_size = {
+        let size_excluding_padding = dict_len
+            + MAGIC_STRING.len()
+            + SIZE_MAJOR_VERSION
+            + SIZE_MINOR_VERSION
+            + SIZE_HEADER_LEN[1];
+        let mut header_size = HEADER_BLOCK_SIZE;
+        while header_size < size_excluding_padding {
+            header_size += HEADER_BLOCK_SIZE;
+        }
+        header_size
+    };
     let major_version = if header_size <= MAX_HEADER_SIZE_V1 {
         1u8
     } else {
@@ -40,6 +48,7 @@ pub fn prepare_buffer_info(dict_len: usize) -> BufferInfo {
         - SIZE_MAJOR_VERSION
         - SIZE_MINOR_VERSION
         - SIZE_HEADER_LEN[if major_version == 1u8 { 0usize } else { 1usize }];
+    dbg!(header_size, header_len, dict_len);
     let padding_size: usize = header_len - dict_len;
     let header_len_bytes: Vec<u8> = if major_version == 1u8 {
         (header_len as u16).to_le_bytes().to_vec()
