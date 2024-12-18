@@ -10,6 +10,12 @@ A Rust library for reading and writing [`NPY`](https://numpy.org/doc/stable/refe
 
 Refer to the example code in [`main.rs`](https://github.com/NaokiHori/rust_npy_io/blob/main/src/main.rs).
 
+A simple binary crate can be used via:
+
+```bash
+cargo run --features="reader writer"
+```
+
 ## Caveat
 
 This crate is essentially a Rust implementation of my [`existing library`](https://github.com/NaokiHori/SimpleNpyIO) in C, and is intended to be for personal-use.

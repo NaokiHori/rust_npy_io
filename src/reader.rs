@@ -2,7 +2,8 @@ mod dict;
 pub mod error;
 
 use crate::consts::{
-    HEADER_BLOCK_SIZE, MAGIC_STRING, SIZE_HEADER_LEN, SIZE_MAJOR_VERSION, SIZE_MINOR_VERSION,
+    HEADER_BLOCK_SIZE, MAGIC_STRING, MINOR_VERSION, SIZE_HEADER_LEN, SIZE_MAJOR_VERSION,
+    SIZE_MINOR_VERSION,
 };
 use crate::error::ReadHeaderError;
 use std::io::Read;
@@ -34,7 +35,7 @@ pub fn check_minor_version(f: &mut std::fs::File) -> Result<(), ReadHeaderError>
     let mut buf = [0u8; SIZE_MINOR_VERSION];
     read_exact(f, &mut buf)?;
     let minor_version = buf[0];
-    if minor_version != 0u8 {
+    if minor_version != MINOR_VERSION {
         return Err(ReadHeaderError::InvalidMinorVersion(minor_version));
     }
     Ok(())

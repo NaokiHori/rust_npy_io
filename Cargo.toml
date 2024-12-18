@@ -3,5 +3,10 @@ name = "rust_npy_io"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = []
+reader = ["regex"]
+writer = []
+
 [dependencies]
-regex = "1.11.1"
+regex = { version = "1.11.1", optional = true }

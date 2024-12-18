@@ -88,7 +88,7 @@ mod tests {
     #[test]
     fn single_quotations() {
         let haystack = r#"'descr': '<i8', 'fortran_order': False, 'shape': (3, 5), "#;
-        assert_eq!(fetch_descr(haystack), Ok("<i8".to_string()));
+        assert_eq!(fetch_descr(haystack), Ok(r#"'<i8'"#.to_string()));
         assert_eq!(fetch_fortran_order(haystack), Ok(false));
         assert_eq!(fetch_shape(haystack), Ok([3usize, 5usize].to_vec()));
     }
@@ -96,7 +96,7 @@ mod tests {
     #[test]
     fn double_quotations() {
         let haystack = r#""descr": "<i8", "fortran_order": False, "shape": (3, 5), "#;
-        assert_eq!(fetch_descr(haystack), Ok("<i8".to_string()));
+        assert_eq!(fetch_descr(haystack), Ok(r#""<i8""#.to_string()));
         assert_eq!(fetch_fortran_order(haystack), Ok(false));
         assert_eq!(fetch_shape(haystack), Ok([3usize, 5usize].to_vec()));
     }
@@ -115,10 +115,13 @@ mod tests {
 
     #[test]
     fn fetch_descr_normal() {
-        assert_eq!(fetch_descr(r#"'descr':'<f8'"#), Ok("<f8".to_string()));
-        assert_eq!(fetch_descr(r#"'descr' :"<f8""#), Ok("<f8".to_string()));
-        assert_eq!(fetch_descr(r#""descr": '<f8'"#), Ok("<f8".to_string()));
-        assert_eq!(fetch_descr(r#""descr" : "<f8""#), Ok("<f8".to_string()));
+        assert_eq!(fetch_descr(r#"'descr':'<f8'"#), Ok(r#"'<f8'"#.to_string()));
+        assert_eq!(fetch_descr(r#"'descr' :"<f8""#), Ok(r#""<f8""#.to_string()));
+        assert_eq!(fetch_descr(r#""descr": '<f8'"#), Ok(r#"'<f8'"#.to_string()));
+        assert_eq!(
+            fetch_descr(r#""descr" : "<f8""#),
+            Ok(r#""<f8""#.to_string())
+        );
     }
 
     #[test]

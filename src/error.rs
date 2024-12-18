@@ -1,7 +1,9 @@
-use crate::consts::HEADER_BLOCK_SIZE;
+#[cfg(feature = "reader")]
 use crate::reader::error::ParseError;
+#[cfg(feature = "writer")]
 use crate::writer::error::ValidationError;
 
+#[cfg(feature = "reader")]
 #[derive(Debug)]
 pub enum ReadHeaderError {
     Io(std::io::Error),
@@ -12,10 +14,13 @@ pub enum ReadHeaderError {
     ParseFailed(ParseError),
 }
 
+#[cfg(feature = "reader")]
 impl std::error::Error for ReadHeaderError {}
 
+#[cfg(feature = "reader")]
 impl std::fmt::Display for ReadHeaderError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        use crate::consts::HEADER_BLOCK_SIZE;
         match self {
             ReadHeaderError::Io(error) => {
                 write!(f, "Io error: {}", error)
@@ -43,18 +48,21 @@ impl std::fmt::Display for ReadHeaderError {
     }
 }
 
+#[cfg(feature = "reader")]
 impl From<std::io::Error> for ReadHeaderError {
     fn from(error: std::io::Error) -> Self {
         ReadHeaderError::Io(error)
     }
 }
 
+#[cfg(feature = "reader")]
 impl From<ParseError> for ReadHeaderError {
     fn from(error: ParseError) -> Self {
         ReadHeaderError::ParseFailed(error)
     }
 }
 
+#[cfg(feature = "writer")]
 #[derive(Debug)]
 pub enum WriteHeaderError {
     Io(std::io::Error),
@@ -62,8 +70,10 @@ pub enum WriteHeaderError {
     ZeroPaddingSize,
 }
 
+#[cfg(feature = "writer")]
 impl std::error::Error for WriteHeaderError {}
 
+#[cfg(feature = "writer")]
 impl std::fmt::Display for WriteHeaderError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         match self {
@@ -80,12 +90,14 @@ impl std::fmt::Display for WriteHeaderError {
     }
 }
 
+#[cfg(feature = "writer")]
 impl From<std::io::Error> for WriteHeaderError {
     fn from(error: std::io::Error) -> Self {
         WriteHeaderError::Io(error)
     }
 }
 
+#[cfg(feature = "writer")]
 impl From<ValidationError> for WriteHeaderError {
     fn from(error: ValidationError) -> Self {
         WriteHeaderError::ValidationFailed(error)

@@ -1,6 +1,8 @@
 mod consts;
 pub mod error;
+#[cfg(feature = "reader")]
 mod reader;
+#[cfg(feature = "writer")]
 mod writer;
 
 pub struct Header {
@@ -9,6 +11,7 @@ pub struct Header {
     pub shape: Vec<usize>,
 }
 
+#[cfg(feature = "reader")]
 pub fn read_header(f: &mut std::fs::File) -> Result<Header, error::ReadHeaderError> {
     reader::check_magic_string(f)?;
     let major_version: u8 = reader::fetch_major_version(f)?;
@@ -18,6 +21,7 @@ pub fn read_header(f: &mut std::fs::File) -> Result<Header, error::ReadHeaderErr
     Ok(header)
 }
 
+#[cfg(feature = "writer")]
 pub fn write_header(f: &mut std::fs::File, header: &Header) -> Result<(), error::WriteHeaderError> {
     let dict: Vec<u8> = writer::prepare_dictionary(header)?;
     let buffer_info: writer::BufferInfo = writer::prepare_buffer_info(dict.len());
